@@ -1,16 +1,22 @@
 import { useState } from "react";
-import { StyleSheet, TextInput, View, Button, FlatList } from "react-native";
+import { StyleSheet, View, FlatList, Button, Image } from "react-native";
+import { StatusBar } from "expo-status-bar";
+
 import GoalItem from "./components/GoalItem";
+import GoalInput from "./components/GoalInput";
 
 export default function App() {
-  const [enteredGoalText, setEnteredGoalText] = useState("");
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [courseGoals, setCourseGoals] = useState([]);
 
-  function goalInputHandler(enteredText) {
-    setEnteredGoalText(enteredText);
+  function startAddGoalHandler() {
+    setIsModalVisible(true);
+  }
+  function endAddGoalHandler() {
+    setIsModalVisible(false);
   }
 
-  function addGoalHandler() {
+  function addGoalHandler(enteredGoalText) {
     setCourseGoals((currentCourseGoals) => [
       ...currentCourseGoals,
       {
@@ -18,65 +24,84 @@ export default function App() {
         id: Math.random().toString(),
       },
     ]);
+    endAddGoalHandler();
+  }
+
+  function deleteGoalHandler(id) {
+    setCourseGoals((currentCourseGoals) => {
+      return currentCourseGoals.filter((goal) => goal.id !== id);
+    });
   }
 
   return (
-    <View style={styles.appContainer}>
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.textInput}
-          placeholder="Your course goal!"
-          onChangeText={goalInputHandler}
+    <>
+      <StatusBar style="light" />
+      <View style={styles.appContainer}>
+        <Button
+          title="Add New Goal"
+          color="#9653ed"
+          onPress={startAddGoalHandler}
         />
-        <Button title="Add Goal" onPress={addGoalHandler} />
+        {
+          <GoalInput
+            onAddGoal={addGoalHandler}
+            isVisible={isModalVisible}
+            onCancel={endAddGoalHandler}
+          />
+        }
+        <View style={styles.goalsContainer}>
+          {courseGoals.length !== 0 && (
+            <FlatList
+              data={courseGoals}
+              renderItem={(itemData) => {
+                return (
+                  <GoalItem
+                    text={itemData.item.text}
+                    id={itemData.item.id}
+                    onDeleteItem={deleteGoalHandler}
+                  />
+                );
+              }}
+              keyExtractor={(item, index) => {
+                return item.id;
+              }}
+            />
+          )}
+
+          {courseGoals.length === 0 && (
+            <View style={styles.imageContainer}>
+              <Image
+                style={styles.image}
+                source={require("./assets/images/goal.png")}
+              />
+            </View>
+          )}
+        </View>
       </View>
-      <View style={styles.goalsContainer}>
-        <FlatList
-          data={courseGoals}
-          renderItem={(itemData) => {
-            return <GoalItem text={itemData.item.text} />;
-          }}
-          keyExtractor={(item, index) => {
-            return item.id;
-          }}
-        />
-      </View>
-    </View>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   appContainer: {
     flex: 1,
-    paddingTop: 50,
+    paddingTop: 70,
     paddingHorizontal: 16,
-  },
-  inputContainer: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 24,
-    borderBottomWidth: 1,
-    borderBottomColor: "#cccccc",
-  },
-  textInput: {
-    borderWidth: 1,
-    borderColor: "#cccccc",
-    width: "70%",
-    marginRight: 8,
-    padding: 8,
   },
   goalsContainer: {
     flex: 5,
+    paddingTop: 30,
   },
-  goalItem: {
-    padding: 8,
-    margin: 8,
-    borderRadius: 6,
-    backgroundColor: "#5e0acc",
+  image: {
+    width: 200,
+    height: 200,
+    opacity: 0.3,
   },
-  goalText: {
-    color: "white",
+  imageContainer: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
