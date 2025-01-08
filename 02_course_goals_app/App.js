@@ -42,13 +42,13 @@ export default function App() {
           color="#9653ed"
           onPress={startAddGoalHandler}
         />
-        {
-          <GoalInput
-            onAddGoal={addGoalHandler}
-            isVisible={isModalVisible}
-            onCancel={endAddGoalHandler}
-          />
-        }
+
+        <GoalInput
+          onAddGoal={addGoalHandler}
+          isVisible={isModalVisible}
+          onCancel={endAddGoalHandler}
+        />
+
         <View style={styles.goalsContainer}>
           {courseGoals.length !== 0 && (
             <FlatList
