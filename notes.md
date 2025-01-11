@@ -144,3 +144,83 @@ Ways to debug a React Native App:
 3. console.log()
 4. Использовать JS debugger (в меню разработчика) (Ctrl+m чтобы открыть меню ИЛИ нажать "j" в терминале чтобы открыть debugger)
 5. Использовать React DevTools, установив их глобально командой `npm install -g react-devtools`. Использовать команду `react-devtools`, а затем из developer menu в expo go зайти в JS debugger - там запустятся React DevTools.
+
+## 04 - Diving Deeper into Components, Layouts & Styling - Building a Mini-Game App
+
+### 003 Setting Up our Screen Components
+
+Для создания экранов можно создать папку "screens" - это не обязательно, но удобно.
+
+### 005 Styling for Android & iOS
+
+Для создания тени на андроиде мы можем использовать
+
+```
+  elevation: 4,
+```
+
+Чем больше число - тем "выше" элемент и тем больше тень.
+А для iOS нужно использовать набор свойств "shadow":
+
+```
+  shadowColor: "black",
+  shadowOffset: { width: 0, height: 2 }, // тень сдвинута вниз на 2 пикселя
+  shadowRadius: 6,
+  shadowOpacity: 0.25,
+```
+
+### 006 Styling the Number Input Element
+
+Длину вводимого значения в инпут можно ограничить при помощи `maxLength`:
+
+```
+  <TextInput maxLength={2} />
+```
+
+### 007 Configuring the TextInput Field
+
+Для инпута можно установить тип клавиатуры, которую он будет открывать, а также много других настроек:
+
+```
+  <TextInput
+    maxLength={2}
+    keyboardType="number-pad"
+    autoCapitalize="none"
+    autoCorrect={false}
+  />
+```
+
+### 011 Adding a Linear Gradient
+
+Добавлять градиенты через стили нельзя. Для этого нужно установить специальный пакет:
+
+```
+  expo install expo-linear-gradient
+```
+
+А затем использовать компонент:
+
+```
+import { LinearGradient } from "expo-linear-gradient";
+
+  <LinearGradient
+    colors={["#4e0329", "#ddb52f"]}
+  >
+      something here...
+  </LinearGradient>
+```
+
+### 012 Adding a Background Image
+
+Фоновое изображение нужно добавлять через специальный компонент:
+
+```
+  <ImageBackground
+    source={require("./assets/images/background.png")}
+    resizeMode="cover"
+    style={styles.rootScreen} // стили фонового элемента
+    imageStyle={styles.backgroundImage} // стили самой картинки
+  >
+    <элемент, позади которого будет изображение>
+  </ImageBackground>
+```
