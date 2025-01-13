@@ -224,3 +224,7 @@ import { LinearGradient } from "expo-linear-gradient";
     <элемент, позади которого будет изображение>
   </ImageBackground>
 ```
+
+### 014 Handling User Input & Showing an Alert Dialog
+
+В React Native есть специальный объект `Alert`, у которого есть методы `.prompt()` и `.alert()`, которые позволяют показывать окошко с предупреждениями
