@@ -228,3 +228,65 @@ import { LinearGradient } from "expo-linear-gradient";
 ### 014 Handling User Input & Showing an Alert Dialog
 
 В React Native есть специальный объект `Alert`, у которого есть методы `.prompt()` и `.alert()`, которые позволяют показывать окошко с предупреждениями
+
+### 017 Respecting Device Screen Restrictions with the SafeAreaView
+
+Чтобы контент приложения не наползал на статус бар, нужно использовать компонент `SafeAreaView`. Ещё, если он не работает, можно прибегнуть к хаку со стилями и подставить в `marginTop` высоту статус бара:
+
+```
+  rootScreen: {
+    flex: 1,
+    marginTop: StatusBar.currentHeight,
+  },
+```
+
+### 025 Working with Icons (Button Icons)
+
+Expo предоставляет свою библиотеку иконок `@expo/vector-icons`, которой очень просто пользоваться. Ничего дополнительно устанавливать не нужно:
+
+```
+  import { Ionicons } from "@expo/vector-icons";
+  ...
+  <Ionicons name="remove" size={24} color="white" />
+```
+
+Список иконок можно найти на их сайте.
+
+### 026 Adding & Using Custom Fonts with React Native Apps
+
+Для работы со шрифтами лучше всего использовать библиотеку:
+
+```
+expo install expo-font
+```
+
+Также можно использовать библиотеку `expo-google-fonts` для того, чтобы совсем просто пользоваться шрифтами гугла.
+
+Используются шрифты так (всё происходит в App.js):
+
+```
+import { useFonts } from "expo-font";
+
+
+const [fontsLoaded] = useFonts({
+  "open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),
+  "open-sans-bold": require("./assets/fonts/OpenSans-Bold.ttf"),
+});
+
+if (!fontsLoaded) {
+  return <AppLoading />;
+}
+```
+
+Для показа индикатора загрузки можно использовать библиотеку
+
+```
+expo install expo-app-loading
+```
+
+которая и предоставит компонент `<AppLoading />`
+
+### 028 Using & Styling Nested Text
+
+`<Text>` может содержать в себе компонент `<Text>` , но не может содержать в себе компонент `<View>`.
+`<Text>` расположенный внутри другого `<Text>` унаследует его стили.
