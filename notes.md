@@ -290,3 +290,31 @@ expo install expo-app-loading
 
 `<Text>` может содержать в себе компонент `<Text>` , но не может содержать в себе компонент `<View>`.
 `<Text>` расположенный внутри другого `<Text>` унаследует его стили.
+
+## 05 - Building Adaptive User Interfaces (Adapt to Platform & Device Sizes)
+
+### 003 Introducing the Dimensions API
+
+Для адаптива можно использовать
+
+```
+import { Dimensions } from "react-native";
+```
+
+Это объект с информацией. Например, можно получить информацию про ширину экрана вот так:
+
+```
+const deviceWidth = Dimensions.get("window").width;
+```
+
+В .get можно передать "window" или "screen". На iOS разницы нет. На android screen это весь доступный экран, а window - доступный экран минус статус бар.
+Полученное значение можно использовать в стилях, чтобы установить разные значения размеров элементов в зависимости от размера экрана:
+
+```
+const styles = StyleSheet.create({
+  numberText: {
+    fontSize: deviceWidth < 380 ? 28 : 36,
+  },
+});
+
+```
