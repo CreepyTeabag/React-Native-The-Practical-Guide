@@ -318,3 +318,55 @@ const styles = StyleSheet.create({
 });
 
 ```
+
+### 005 Understanding Screen Orientation Problems
+
+В файле app.json можно зафиксировать ориентацию экрана:
+
+```
+"orientation": "portrait", // или "landscape" или "default" для переключения между режимами
+```
+
+Для динамического пересчёта размеров на основании ширины/высоты при повороте экрана мы не можем просто использовать `const deviceHeight = Dimensions.get("window").height;`, потому что это значение считается только один раз и не пересчитывается при повороте экрана.
+
+Вместо этого нужно использовать хук `import { useWindowDimensions } from "react-native";`, внутри компонента использовать его
+
+```
+const { width, height } = useWindowDimensions();
+
+const marginTopDistance = height < 361 ? 10 : 100;
+```
+
+и применить стили к элементу `<View style={[styles.rootContainer, { marginTop: marginTopDistance }]}>`: тогда каждый раз при смене размеров экрана значение будет пересчитываться.
+
+### 007 Managing Screen Content with KeyboardAvoidingView
+
+На iOS при клике на инпуте в ландшафтном режиме клавиатура перекрывает часть экрана и не закрывается. Чтобы это решить, нужно использовать следующие компоненты:
+
+```
+import {
+  KeyboardAvoidingView,
+  ScrollView,
+} from "react-native";
+...
+  <ScrollView style={styles.screen}>
+    <KeyboardAvoidingView style={styles.screen} behavior="position">
+      <наш контент, который теперь будет сдвигаться вверх при открытии клавиатуры, его можно будет скроллить и при клике на который будет закрываться клавиатура.>
+    </KeyboardAvoidingView>
+  </ScrollView>
+```
+
+### 010 Writing Platform-specific Code with the Platform API
+
+На React Native можно писать разный код для разных платформ.
+
+```
+import { Platform } from "react-native";
+
+// .OS === android / ios /  macos / web / windows
+borderWidth: Platform.OS === "android" ? 2 : 0
+ИЛИ
+borderWidth: Platform.select({ ios: 0, android: 2 }),
+```
+
+Также можно создавать разные файлы для разных платформ. Для этого достаточно создать два файла, например: `Title.android.js` и `Title.ios.js`, а в местах импорта использовать общее название: `import Title from "../components/ui/Title";`. React Native использует подходящий файл в зависимости от платформы. Разными могут быть файлы не только файлы компонентов, но и, например, файлы с переменными.
