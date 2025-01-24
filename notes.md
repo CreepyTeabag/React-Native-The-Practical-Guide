@@ -370,3 +370,106 @@ borderWidth: Platform.select({ ios: 0, android: 2 }),
 ```
 
 Также можно создавать разные файлы для разных платформ. Для этого достаточно создать два файла, например: `Title.android.js` и `Title.ios.js`, а в местах импорта использовать общее название: `import Title from "../components/ui/Title";`. React Native использует подходящий файл в зависимости от платформы. Разными могут быть файлы не только файлы компонентов, но и, например, файлы с переменными.
+
+## 06 - React Native Navigation with React Navigation [MEALS APP]
+
+### 004 Displaying Items in a Grid
+
+`<FlatList>` может выводить элементы в несколько колонок. Для этого нужно добавить ему проп `numColumns={число_колонок}`
+
+### 005 Getting Started with the React Navigation Package
+
+Для того, чтобы добавить в приложение навигацию, нужно установить пакет:
+
+```
+npm install @react-navigation/native
+npx expo install react-native-screens react-native-safe-area-context
+```
+
+Затем в App.js обернуть всё приложение в соответствующий компонент:
+
+```
+import { NavigationContainer } from "@react-navigation/native";
+export default function App() {
+  return (
+    <>
+      <StatusBar style="light" />
+      <NavigationContainer>
+        <Something />
+      </NavigationContainer>
+    </>
+  );
+}
+
+```
+
+Для того, чтобы начать пользоваться навигацией, нужно установить навигатор. Навигатор - это один из способов навигации (табы, выдвижной элемент и т.д.)
+
+```
+npm install @react-navigation/native-stack
+```
+
+А затем нам нужно вне компонента создать компонент навигатора и уже в приложении использовать его:
+
+```
+const Stack = createNativeStackNavigator();
+...
+export default function App() {
+  return (
+    <>
+      <StatusBar style="dark" />
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="MealsCategories" component={CategoriesScreen} />
+          <Stack.Screen name="MealsOverview" component={MealsOverviewScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </>
+  );
+}
+```
+
+### 006 Implementing Navigation Between Two Screens
+
+Каждый компонент, который используется в качестве `Stack.Screen`, автоматом получает проп `navigation`
+И там мы в нужном нам месте можем просто вызвать переход на нужный нам экран с указанием его имени:
+
+```
+onPress={() => navigation.navigate("MealsOverview");}
+```
+
+### 007 Setting the Default Screen
+
+Установить экран по умолчанию можно двумя способами:
+
+1. Просто установить экран первым в списке
+2. Указать название экрана по умолчанию: `<Stack.Navigator initialRouteName="ProductDetails">`
+
+### 008 Understanding the useNavigation Hook
+
+Вообще есть два навигатор типа стэк: Stack и Native Stack. Но Native Stack использует нативные технологии, а Stack их просто имитирует. Так что Native Stack предпочтительнее и производительнее. Но в некоторых случаях, если с Native Stack есть какие-то проблемы, можно попробовать использовать Stack.
+
+Проп navigation получает только экран, который будет открыт навигацией. Чтобы избежать prop drilling-а и не передавать глубоко внутрь navigation, можно использовать хук в любом компоненте:
+
+```
+import { useNavigation } from "@react-navigation/native";
+
+...
+
+const navigation = useNavigation();
+```
+
+### 009 Working with Route Parameters To Pass Data Between Screens
+
+Каждый экран помимо пропа `navigation` получает ещё и проп `route`.
+`route` содержит в себе информацию касательно текущего рута. В том числе, объект `params`, который мы определяем, когда прописываем навигацию: `navigate('SomeScreen', {anyKey: 'any info here!'})`
+
+Точно так же как и с `navigation`, мы можем не только в самом экране получить `route` как проп, но и мы можем его получить из любого другого внутреннего компонента при помощи хука:
+
+```
+import { useRoute } from "@react-navigation/native";
+
+...
+
+const route = useRoute();
+```
