@@ -2,8 +2,9 @@ import { MEALS, CATEGORIES } from "../data/dummy-data";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 
 import MealItem from "../components/MealItem";
+import { useEffect, useLayoutEffect } from "react";
 
-export default function MealsOverviewScreen({ route }) {
+export default function MealsOverviewScreen({ route, navigation }) {
   const categoryId = route.params.categoryId;
   const color = CATEGORIES.find((cat) => cat.id === categoryId).color;
 
@@ -11,17 +12,27 @@ export default function MealsOverviewScreen({ route }) {
     mealItem.categoryIds.includes(categoryId)
   );
 
+  useLayoutEffect(() => {
+    const categoryTitle = CATEGORIES.find((cat) => cat.id === categoryId).title;
+
+    navigation.setOptions({
+      title: categoryTitle,
+    });
+  }, [categoryId, navigation]);
+
   function renderMealItem(itemData) {
+    const item = itemData.item;
+
     return (
       <MealItem
-        title={itemData.item.title}
-        affordability={itemData.item.affordability}
-        complexity={itemData.item.complexity}
-        duration={itemData.item.duration}
-        isGlutenFree={itemData.item.isGlutenFree}
-        isVegan={itemData.item.isVegan}
-        isVegetarian={itemData.item.isVegetarian}
-        imageUrl={itemData.item.imageUrl}
+        title={item.title}
+        affordability={item.affordability}
+        complexity={item.complexity}
+        duration={item.duration}
+        isGlutenFree={item.isGlutenFree}
+        isVegan={item.isVegan}
+        isVegetarian={item.isVegetarian}
+        imageUrl={item.imageUrl}
         color={color}
       />
     );

@@ -1,4 +1,11 @@
-import { ImageBackground, StyleSheet, Text, View } from "react-native";
+import {
+  ImageBackground,
+  Platform,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 
 export default function MealItem({
   title,
@@ -31,12 +38,16 @@ export default function MealItem({
       resizeMode="cover"
       imageStyle={styles.backgroundImage}
     >
-      <View style={styles.container}>
+      <Pressable
+        style={({ pressed }) => [
+          styles.container,
+          pressed ? styles.itemPressed : null,
+        ]}
+        android_ripple={{ color }}
+      >
         <View style={styles.nameWrapper}>
-          <View style={[styles.titleWrapper]}>
-            <Text style={[styles.title, { textShadowColor: color }]}>
-              {title}
-            </Text>
+          <View style={[styles.titleWrapper, { borderColor: color }]}>
+            <Text style={styles.title}>{title}</Text>
           </View>
         </View>
 
@@ -66,7 +77,7 @@ export default function MealItem({
             </View>
           )}
         </View>
-      </View>
+      </Pressable>
     </ImageBackground>
   );
 }
@@ -75,12 +86,16 @@ const styles = StyleSheet.create({
   imageContainer: {
     width: "96%",
     height: 240,
-    elevation: 6,
     marginHorizontal: 6,
     marginVertical: 8,
     backgroundColor: "#f5f5f5",
-    borderRadius: 8,
-    overflow: "hidden",
+    borderRadius: 16,
+    elevation: 6,
+    shadowColor: "black",
+    shadowOpacity: 0.25,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 8,
+    overflow: Platform.OS === "android" ? "hidden" : "visible",
   },
   container: {
     flex: 1,
@@ -91,9 +106,13 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
   },
   backgroundImage: {
-    borderRadius: 8,
+    borderRadius: 16,
     minWidth: "100%",
     width: "120%",
+  },
+  itemPressed: {
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 0 },
   },
   nameWrapper: {
     flex: 1,
@@ -103,9 +122,11 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
   },
   titleWrapper: {
-    borderRadius: 8,
-    backgroundColor: "#f5f5f590",
+    borderRadius: 16,
+    backgroundColor: "#f5f5f5aa",
     padding: 3,
+
+    borderWidth: 1,
   },
   title: {
     fontSize: 24,
@@ -113,6 +134,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 5,
+    // textShadowColor: "#00000080",
   },
   tagsWrapper: {
     flex: 1,

@@ -473,3 +473,57 @@ import { useRoute } from "@react-navigation/native";
 
 const route = useRoute();
 ```
+
+### 012 Styling Screen Headers & Backgrounds
+
+При использовании навигации автоматом создаётся определённый вид у экранов. изменить его можно, добавив в `<Stack.Screen />` проп `options={{ title: "All Categories" }}`. Это установит стили для одного экрана.
+Если же есть стили, которые мы хотим применять везде - их мы должны прописать выше, в `StackNavigator`
+
+```
+<Stack.Navigator
+  screenOptions={{
+    headerStyle: { backgroundColor: "#24180f" },
+    headerTintColor: "#ffffff",
+    contentStyle: { backgroundColor: "#3f2f25" },
+  }}
+>
+```
+
+### 013 Setting Navigation Options Dynamically
+
+Также можно динамически настраивать экран используя автоматически передаваемые экрану `route` и `navigation`:
+
+```
+  <Stack.Screen
+    name="MealsOverview"
+    component={MealsOverviewScreen}
+    options={({ route, navigation }) => {
+      const catId = route.params.categoryId;
+      const category = CATEGORIES.find((cat) => cat.id === catId);
+
+      return {
+        title: category.title,
+        headerStyle: { backgroundColor: category.color },
+      };
+    }}
+  />
+```
+
+И ещё есть второй вариант. В компоненте экрана мы автоматом получаем `navigation` и при помощи него задаём опции экрана:
+
+```
+export default function MealsOverviewScreen({ route, navigation }) {
+  const categoryId = route.params.categoryId;
+
+  // useEffect(() => {
+  useLayoutEffect(() => {
+    const categoryTitle = CATEGORIES.find((cat) => cat.id === categoryId).title;
+
+    navigation.setOptions({
+      title: categoryTitle,
+    });
+  }, [categoryId, navigation]);
+}
+```
+
+Обязательно нужно устанавливать опции в useEffect-е, потому что иначе они будут перевычисляться при каждом ререндере, а нам это не нужно. Более того: обычный useEffect выполняется когда компонент уже отрендерился, и иногда это заметно (в данном случае, название экрана выводится не сразу, а с некоторой задержкой). В таком случае помогает использовать useLayoutEffect - он оптимизирует работу эффекта и срабатывает быстрее.

@@ -6,6 +6,7 @@ import { useFonts } from "expo-font";
 
 import CategoriesScreen from "./screens/CategoriesScreen";
 import MealsOverviewScreen from "./screens/MealsOverviewScreen";
+import { CATEGORIES } from "./data/dummy-data";
 
 const Stack = createNativeStackNavigator();
 
@@ -21,11 +22,35 @@ export default function App() {
 
   return (
     <>
-      <StatusBar style="dark" />
+      <StatusBar style="light" />
       <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name="MealsCategories" component={CategoriesScreen} />
-          <Stack.Screen name="MealsOverview" component={MealsOverviewScreen} />
+        <Stack.Navigator
+          screenOptions={{
+            headerStyle: { backgroundColor: "#3a1c06" },
+            headerTintColor: "#ffffff",
+            contentStyle: { backgroundColor: "#5a3222" },
+          }}
+        >
+          <Stack.Screen
+            name="MealsCategories"
+            component={CategoriesScreen}
+            options={{
+              title: "All Categories",
+            }}
+          />
+          <Stack.Screen
+            name="MealsOverview"
+            component={MealsOverviewScreen}
+            /* options={({ route, navigation }) => {
+              const catId = route.params.categoryId;
+              const category = CATEGORIES.find((cat) => cat.id === catId);
+
+              return {
+                title: category.title,
+                headerStyle: { backgroundColor: category.color },
+              };
+            }} */
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </>
