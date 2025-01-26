@@ -6,6 +6,7 @@ import { useFonts } from "expo-font";
 
 import CategoriesScreen from "./screens/CategoriesScreen";
 import MealsOverviewScreen from "./screens/MealsOverviewScreen";
+import MealDetailScreen from "./screens/MealDetailScreen";
 import { CATEGORIES } from "./data/dummy-data";
 
 const Stack = createNativeStackNavigator();
@@ -51,6 +52,7 @@ export default function App() {
               };
             }} */
           />
+          <Stack.Screen name="MealDetail" component={MealDetailScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </>

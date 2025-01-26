@@ -34,6 +34,7 @@ export default function MealsOverviewScreen({ route, navigation }) {
         isVegetarian={item.isVegetarian}
         imageUrl={item.imageUrl}
         color={color}
+        mealId={item.id}
       />
     );
   }

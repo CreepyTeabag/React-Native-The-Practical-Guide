@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import {
   ImageBackground,
   Platform,
@@ -6,6 +7,8 @@ import {
   Text,
   View,
 } from "react-native";
+
+import Tags from "./Tags";
 
 export default function MealItem({
   title,
@@ -16,20 +19,15 @@ export default function MealItem({
   isVegan,
   isVegetarian,
   imageUrl,
-  color,
+  // color,
+  mealId,
 }) {
-  const affordabilityText =
-    affordability === "affordable"
-      ? "💵"
-      : affordability === "pricey"
-      ? "💵 💵"
-      : "💵 💵 💵";
+  const navigation = useNavigation();
+  const color = "#5a3222";
 
-  const complexityText =
-    complexity === "simple" ? "🧑‍🍳" : complexity === "hard" ? "🧑‍🍳 🧑‍🍳" : "🧑‍🍳🧑‍🍳🧑‍🍳";
-
-  const durationText =
-    duration <= 30 ? "⏳" : duration <= 60 ? "⏳ ⏳" : "⏳ ⏳ ⏳";
+  function onOpenMealDetails() {
+    navigation.navigate("MealDetail", { mealId, color });
+  }
 
   return (
     <ImageBackground
@@ -44,6 +42,7 @@ export default function MealItem({
           pressed ? styles.itemPressed : null,
         ]}
         android_ripple={{ color }}
+        onPress={onOpenMealDetails}
       >
         <View style={styles.nameWrapper}>
           <View style={[styles.titleWrapper, { borderColor: color }]}>
@@ -51,32 +50,15 @@ export default function MealItem({
           </View>
         </View>
 
-        <View style={styles.tagsWrapper}>
-          <View style={[styles.tag, { backgroundColor: color }]}>
-            <Text style={styles.tagText}>Price: {affordabilityText}</Text>
-          </View>
-          <View style={[styles.tag, { backgroundColor: color }]}>
-            <Text style={styles.tagText}>Complexity: {complexityText}</Text>
-          </View>
-          <View style={[styles.tag, { backgroundColor: color }]}>
-            <Text style={styles.tagText}>Time: {durationText}</Text>
-          </View>
-          {isGlutenFree && (
-            <View style={[styles.tag, { backgroundColor: color }]}>
-              <Text style={styles.tagText}>✅ gluten free</Text>
-            </View>
-          )}
-          {isVegan && (
-            <View style={[styles.tag, { backgroundColor: color }]}>
-              <Text style={styles.tagText}>✅ vegan</Text>
-            </View>
-          )}
-          {isVegetarian && (
-            <View style={[styles.tag, { backgroundColor: color }]}>
-              <Text style={styles.tagText}>✅ vegetarian</Text>
-            </View>
-          )}
-        </View>
+        <Tags
+          affordability={affordability}
+          complexity={complexity}
+          duration={duration}
+          isGlutenFree={isGlutenFree}
+          isVegan={isVegan}
+          isVegetarian={isVegetarian}
+          color={color}
+        />
       </Pressable>
     </ImageBackground>
   );
@@ -135,24 +117,5 @@ const styles = StyleSheet.create({
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 5,
     // textShadowColor: "#00000080",
-  },
-  tagsWrapper: {
-    flex: 1,
-    minWidth: 20,
-    height: "100%",
-    justifyContent: "center",
-    alignItems: "flex-end",
-  },
-  tag: {
-    backgroundColor: "green",
-    borderRadius: 50,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    marginVertical: 5,
-    elevation: 3,
-  },
-  tagText: {
-    fontSize: 16,
-    fontFamily: "delius",
   },
 });
