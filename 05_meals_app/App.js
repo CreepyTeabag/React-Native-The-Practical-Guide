@@ -2,14 +2,35 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, Button } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 import { useFonts } from "expo-font";
 
 import CategoriesScreen from "./screens/CategoriesScreen";
 import MealsOverviewScreen from "./screens/MealsOverviewScreen";
 import MealDetailScreen from "./screens/MealDetailScreen";
-import { CATEGORIES } from "./data/dummy-data";
+import FavoritesScreen from "./screens/FavoritesScreen";
 
 const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
+
+function DrawerNavigator() {
+  return (
+    <Drawer.Navigator
+      screenOptions={{
+        headerStyle: { backgroundColor: "#FFDAC1" },
+        headerTintColor: "#4d4d4d",
+        sceneContainerStyle: { backgroundColor: "#F9F6F2" },
+      }}
+    >
+      <Drawer.Screen
+        name="Categories"
+        component={CategoriesScreen}
+        options={{ title: "All Categories" }}
+      />
+      <Drawer.Screen name="Favorites" component={FavoritesScreen} />
+    </Drawer.Navigator>
+  );
+}
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -32,26 +53,21 @@ export default function App() {
             contentStyle: { backgroundColor: "#F9F6F2" },
           }}
         >
-          <Stack.Screen
+          {/* <Stack.Screen
             name="MealsCategories"
             component={CategoriesScreen}
             options={{
               title: "All Categories",
             }}
-          />
+          /> */}
           <Stack.Screen
-            name="MealsOverview"
-            component={MealsOverviewScreen}
-            /* options={({ route, navigation }) => {
-              const catId = route.params.categoryId;
-              const category = CATEGORIES.find((cat) => cat.id === catId);
-
-              return {
-                title: category.title,
-                headerStyle: { backgroundColor: category.color },
-              };
-            }} */
+            name="Drawer"
+            component={DrawerNavigator}
+            options={{
+              headerShown: false,
+            }}
           />
+          <Stack.Screen name="MealsOverview" component={MealsOverviewScreen} />
           <Stack.Screen
             name="MealDetail"
             component={MealDetailScreen}
@@ -59,6 +75,7 @@ export default function App() {
               headerRight: () => {
                 return <Button title="Tap me!" />;
               },
+              title: "Recipe",
             }}
           />
         </Stack.Navigator>
