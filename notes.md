@@ -531,3 +531,74 @@ export default function MealsOverviewScreen({ route, navigation }) {
 ### 015 Outputting Content in the Meal Detail Screen
 
 При использовании изображений из интернета, для `Image` необходимо указывать высоту и ширину, потому что для не локальных картинок React Native не может определить их размер.
+
+### 017 Adding Header Buttons
+
+В хедер, созданный автоматически, мы можем подсунуть свои элементы. Вот так:
+
+```
+<Stack.Screen
+  name="MealDetail"
+  component={MealDetailScreen}
+  options={{
+    headerRight: () => {
+      return <Button title="Tap me!" />;
+    },
+  }}
+/>
+```
+
+Либо, как и в случае с другими опциями, можно этот элемент установить из самого компонента экрана при помощи useLayoutEffect и navigation / useNavigation
+Т.е. в headerRight/headerLeft нужно передать функцию, возвращающую JSX
+
+### 020 Configuring the Drawer Navigator & The Drawer
+
+Для того, чтобы в качестве навигации использовать drawer, достаточно устнаовить необходимые пакеты и использовать его по аналогии со Stack:
+
+```
+npm install @react-navigation/drawer
+
+npx expo install react-native-gesture-handler react-native-reanimated
+
+...
+
+import { NavigationContainer } from "@react-navigation/native";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+
+const Drawer = createDrawerNavigator();
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Drawer.Navigator>
+        <Drawer.Screen
+          name="Welcome"
+          component={WelcomeScreen}
+          options={{
+            headerStyle: { backgroundColor: "#3c0a6b" },
+            headerTintColor: "white",
+          }}
+        />
+        <Drawer.Screen name="User" component={UserScreen} />
+      </Drawer.Navigator>
+    </NavigationContainer>
+  );
+}
+
+```
+
+И так же, как и со Stack-ом, можно через опции поменять внешний вид у Drawer-а.
+
+И так же, как и со Stack-ом, экраны получают пропы route и navigation. И с экранов, например, можно открывать Drawer:
+
+```
+navigation.toggleDrawer();
+```
+
+### 021 Adding, Configuring & Using Bottom Tabs
+
+Ещё один способо навигации - табы. Их есть несколько видов. Самый универсальный - `Bottom Tabs`.
+
+```
+npm install @react-navigation/bottom-tabs
+```

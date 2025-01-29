@@ -2,7 +2,7 @@ import { MEALS, CATEGORIES } from "../data/dummy-data";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 
 import MealItem from "../components/MealItem";
-import { useEffect, useLayoutEffect } from "react";
+import { useLayoutEffect } from "react";
 
 export default function MealsOverviewScreen({ route, navigation }) {
   const categoryId = route.params.categoryId;
@@ -17,6 +17,7 @@ export default function MealsOverviewScreen({ route, navigation }) {
 
     navigation.setOptions({
       title: categoryTitle,
+      headerStyle: { backgroundColor: color },
     });
   }, [categoryId, navigation]);
 

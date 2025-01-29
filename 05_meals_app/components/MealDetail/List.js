@@ -21,15 +21,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   itemText: {
-    color: "#e2b497",
-    fontFamily: "delius",
+    color: "#333333",
+    fontFamily: "lexend",
     fontSize: 18,
   },
   bullet: {
     width: 5,
     height: 5,
     borderRadius: 50,
-    backgroundColor: "#e2b497",
+    backgroundColor: "#333333",
     marginRight: 8,
   },
 });

@@ -41,7 +41,6 @@ const styles = StyleSheet.create({
   gridItem: {
     flex: 1,
     margin: 16,
-    //  backgroundColor: "#f5f5f5",
     borderRadius: 16,
     elevation: 6,
     shadowColor: "black",
@@ -65,9 +64,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 22,
-    color: "black",
-    //  fontFamily: "lexend",
-    fontFamily: "delius",
+    color: "#4d4d4d",
+    fontFamily: "lexend",
     textAlign: "center",
   },
 });

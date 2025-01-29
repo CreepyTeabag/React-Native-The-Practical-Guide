@@ -4,17 +4,31 @@ import { MEALS } from "../data/dummy-data";
 import Tags from "../components/Tags";
 import Subtitle from "../components/MealDetail/Subtitle";
 import List from "../components/MealDetail/List";
+import IconButton from "../components/IconButton";
 
 export default function MealDetailScreen({ route, navigation }) {
   const { mealId, color } = route.params;
 
   const selectedMeal = MEALS.find((meal) => meal.id === mealId);
 
+  function headerButtonPressHandler() {
+    console.log("pressed");
+  }
+
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: selectedMeal.title,
+      headerRight: () => {
+        return (
+          <IconButton
+            icon="star"
+            color="white"
+            onPress={headerButtonPressHandler}
+          />
+        );
+      },
+      headerStyle: { backgroundColor: color },
     });
-  }, [mealId, navigation]);
+  }, [mealId, navigation, headerButtonPressHandler]);
 
   return (
     <ScrollView>
@@ -74,8 +88,8 @@ const styles = StyleSheet.create({
     fontSize: 26,
     margin: 8,
     textAlign: "center",
-    color: "white",
-    fontFamily: "delius",
+    color: "#333333",
+    fontFamily: "lexend",
     textDecorationLine: "underline",
   },
   listContainer: {

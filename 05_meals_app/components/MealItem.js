@@ -19,11 +19,10 @@ export default function MealItem({
   isVegan,
   isVegetarian,
   imageUrl,
-  // color,
+  color,
   mealId,
 }) {
   const navigation = useNavigation();
-  const color = "#5a3222";
 
   function onOpenMealDetails() {
     navigation.navigate("MealDetail", { mealId, color });
@@ -31,7 +30,7 @@ export default function MealItem({
 
   return (
     <ImageBackground
-      style={styles.imageContainer}
+      style={[styles.imageContainer, { borderColor: color }]}
       source={{ uri: imageUrl }}
       resizeMode="cover"
       imageStyle={styles.backgroundImage}
@@ -69,14 +68,15 @@ const styles = StyleSheet.create({
     width: "96%",
     height: 240,
     marginHorizontal: 6,
-    marginVertical: 8,
+    marginBottom: 16,
     backgroundColor: "#f5f5f5",
-    borderRadius: 16,
-    elevation: 6,
+    borderRadius: 12,
+    borderWidth: 2,
     shadowColor: "black",
-    shadowOpacity: 0.25,
     shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 8,
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 3,
     overflow: Platform.OS === "android" ? "hidden" : "visible",
   },
   container: {
@@ -91,6 +91,8 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     minWidth: "100%",
     width: "120%",
+
+    borderRadius: 12,
   },
   itemPressed: {
     shadowOpacity: 0.1,
@@ -105,17 +107,15 @@ const styles = StyleSheet.create({
   },
   titleWrapper: {
     borderRadius: 16,
-    backgroundColor: "#f5f5f5aa",
+    backgroundColor: "#f5f5f5dd",
     padding: 3,
-
     borderWidth: 1,
   },
   title: {
     fontSize: 24,
-    fontFamily: "delius",
+    fontFamily: "lexend",
     paddingHorizontal: 8,
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 5,
-    // textShadowColor: "#00000080",
+    fontSize: 20,
+    color: "#333333",
   },
 });

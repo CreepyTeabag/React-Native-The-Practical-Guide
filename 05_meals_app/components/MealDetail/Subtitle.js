@@ -10,8 +10,8 @@ const styles = StyleSheet.create({
     fontSize: 22,
     margin: 6,
     textAlign: "center",
-    color: "#e2b497",
-    fontFamily: "delius",
     textDecorationLine: "underline",
+    color: "#333333",
+    fontFamily: "lexend",
   },
 });

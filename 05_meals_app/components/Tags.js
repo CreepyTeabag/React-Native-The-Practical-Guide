@@ -8,7 +8,7 @@ export default function Tags({
   isGlutenFree,
   isVegan,
   isVegetarian,
-  //   color,
+  color,
   extraStyles,
 }) {
   const affordabilityText =
@@ -24,31 +24,29 @@ export default function Tags({
   const durationText =
     duration <= 30 ? "⏳" : duration <= 60 ? "⏳ ⏳" : "⏳ ⏳ ⏳";
 
-  const color = "#e2b497";
-
   return (
     <View style={[styles.tagsWrapper, extraStyles ?? null]}>
-      <View style={[styles.tag, { backgroundColor: color }]}>
+      <View style={[styles.tag, { borderColor: color }]}>
         <Text style={styles.tagText}>Price: {affordabilityText}</Text>
       </View>
-      <View style={[styles.tag, { backgroundColor: color }]}>
+      <View style={[styles.tag, { borderColor: color }]}>
         <Text style={styles.tagText}>Complexity: {complexityText}</Text>
       </View>
-      <View style={[styles.tag, { backgroundColor: color }]}>
+      <View style={[styles.tag, { borderColor: color }]}>
         <Text style={styles.tagText}>Time: {durationText}</Text>
       </View>
       {isGlutenFree && (
-        <View style={[styles.tag, { backgroundColor: color }]}>
+        <View style={[styles.tag, { borderColor: color }]}>
           <Text style={styles.tagText}>✅ gluten free</Text>
         </View>
       )}
       {isVegan && (
-        <View style={[styles.tag, { backgroundColor: color }]}>
+        <View style={[styles.tag, { borderColor: color }]}>
           <Text style={styles.tagText}>✅ vegan</Text>
         </View>
       )}
       {isVegetarian && (
-        <View style={[styles.tag, { backgroundColor: color }]}>
+        <View style={[styles.tag, { borderColor: color }]}>
           <Text style={styles.tagText}>✅ vegetarian</Text>
         </View>
       )}
@@ -72,10 +70,11 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     elevation: 3,
     borderWidth: 1,
-    borderColor: "#5a3222",
+    backgroundColor: "#F9F6F2dd",
   },
   tagText: {
     fontSize: 16,
-    fontFamily: "delius",
+    fontFamily: "lexend",
+    color: "#333333",
   },
 });
