@@ -88,11 +88,9 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
   },
   backgroundImage: {
-    borderRadius: 16,
     minWidth: "100%",
     width: "120%",
-
-    borderRadius: 12,
+    borderRadius: 10,
   },
   itemPressed: {
     shadowOpacity: 0.1,
