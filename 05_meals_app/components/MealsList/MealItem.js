@@ -8,7 +8,7 @@ import {
   View,
 } from "react-native";
 
-import Tags from "./Tags";
+import Tags from "../Tags";
 
 export default function MealItem({
   title,
