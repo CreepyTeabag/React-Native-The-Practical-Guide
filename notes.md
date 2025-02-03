@@ -611,3 +611,9 @@ npm install @react-navigation/bottom-tabs
 ### 006 Getting Started with Redux & Redux Toolkit
 
 Для глобального управления стейтом приложения можно использовать как useContext, так и Redux. Т.е. мы создаём контекст / стор и оборачиваем приложение в соответствующий провайдер.
+
+## 09 - Handling User Input
+
+### 004 Configuring the Form Input Elements
+
+Важно помнить, что у компонента `<TextInput />` по умолчанию стоят пропы `autoCapitalize="sentences"` и `autoCorrect={true}` так что при необходимости их нужно отключить.

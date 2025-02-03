@@ -1,10 +1,10 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React, { useContext, useLayoutEffect } from "react";
 import { GlobalStyles } from "../constants/styles";
 import IconButton from "../components/ui/IconButton";
-import { BlurView } from "expo-blur";
 import Button from "../components/ui/Button";
 import { ExpensesContext } from "../store/expenses-context";
+import ExpenseForm from "../components/ManageExpense/ExpenseForm";
 
 export default function ManageExpense({ route, navigation }) {
   const { expenses, addExpense, updateExpense, deleteExpense } =
@@ -48,14 +48,12 @@ export default function ManageExpense({ route, navigation }) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.buttons}>
-        <Button mode="flat" onPress={cancelHandler} style={styles.button}>
-          Cancel
-        </Button>
-        <Button onPress={confirmHandler} style={styles.button}>
-          {isEditing ? "Update" : "Add"}
-        </Button>
-      </View>
+      <ExpenseForm
+        onCancel={cancelHandler}
+        onSubmit={confirmHandler}
+        submitButtonLabel={isEditing ? "Update" : "Add"}
+      />
+
       <View style={styles.deleteContainer}>
         {isEditing && (
           <IconButton
@@ -75,15 +73,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 24,
     backgroundColor: `${GlobalStyles.colors.primary800}dd`,
-  },
-  buttons: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  button: {
-    minWidth: 120,
-    marginHorizontal: 8,
   },
   deleteContainer: {
     alignItems: "center",
