@@ -1,14 +1,21 @@
 import { StyleSheet, View } from "react-native";
 import React, { useContext, useLayoutEffect } from "react";
-import { GlobalStyles } from "../constants/styles";
-import IconButton from "../components/ui/IconButton";
-import Button from "../components/ui/Button";
 import { ExpensesContext } from "../store/expenses-context";
+
+import IconButton from "../components/ui/IconButton";
 import ExpenseForm from "../components/ManageExpense/ExpenseForm";
 
+import { storeExpense, updateExpense, deleteExpense } from "../util/http";
+
+import { GlobalStyles } from "../constants/styles";
+
 export default function ManageExpense({ route, navigation }) {
-  const { expenses, addExpense, updateExpense, deleteExpense } =
-    useContext(ExpensesContext);
+  const {
+    expenses,
+    addExpense,
+    updateExpense: updateExpenseCtx,
+    deleteExpense: deleteExpenseCtx,
+  } = useContext(ExpensesContext);
 
   const editedExpenseId = route.params?.expenseId;
   const isEditing = !!editedExpenseId;
@@ -23,8 +30,9 @@ export default function ManageExpense({ route, navigation }) {
     });
   }, [navigation, isEditing]);
 
-  function deleteExpenseHandler() {
-    deleteExpense(editedExpenseId);
+  async function deleteExpenseHandler() {
+    await deleteExpense(editedExpenseId);
+    deleteExpenseCtx(editedExpenseId);
     navigation.goBack();
   }
 
@@ -32,11 +40,13 @@ export default function ManageExpense({ route, navigation }) {
     navigation.goBack();
   }
 
-  function confirmHandler(expenseData) {
+  async function confirmHandler(expenseData) {
     if (isEditing) {
-      updateExpense(editedExpenseId, expenseData);
+      updateExpenseCtx(editedExpenseId, expenseData);
+      await updateExpense(editedExpenseId, expenseData);
     } else {
-      addExpense(expenseData);
+      const id = await storeExpense(expenseData);
+      addExpense({ ...expenseData, id });
     }
 
     navigation.goBack();

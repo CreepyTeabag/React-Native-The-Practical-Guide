@@ -617,3 +617,21 @@ npm install @react-navigation/bottom-tabs
 ### 004 Configuring the Form Input Elements
 
 Важно помнить, что у компонента `<TextInput />` по умолчанию стоят пропы `autoCapitalize="sentences"` и `autoCorrect={true}` так что при необходимости их нужно отключить.
+
+## 10 - Sending Http Requests
+
+### 004 Sending POST Http Requests
+
+Для взаимодействия с бэкендом удобно использовать библиотеку axios. Если при том ещё использовать firebase - то можно сделать всё совсем просто. Firebase предоставляет ссылку, по которой можно отправлять запрос. А запро при помощи axios формируется так:
+
+```
+import axios from "axios";
+
+export function storeExpense(expenseData) {
+  axios.post(
+    "<link_from_firebase>/<node_name>.json",
+    expenseData
+  );
+}
+
+```

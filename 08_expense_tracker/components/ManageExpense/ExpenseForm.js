@@ -48,7 +48,7 @@ export default function ExpenseForm({
       date: formattedDate,
       description: inputs.description.value,
     };
-    console.log(expenseData);
+
     const yearIsValid =
       year.toString().length === 4 && year > 1900 && year <= 2100;
     const monthIsValid = month >= 0 && month <= 11;
