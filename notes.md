@@ -635,3 +635,13 @@ export function storeExpense(expenseData) {
 }
 
 ```
+
+## 11 - User Authentication
+
+### 003 How Does Authentication Work
+
+Authentications works quite simple. We've got our app and a backend API. User's credentials are sent to the backend with a http request. On the backend they are validated. Then a unique authentication token is generated. Then the token is sent back to the app. The token is stored on the device. On the phone we check for the token to confirm that authentication was successful. And this token is sent with all future http requests to confirm the validity of the request.
+
+### 005 Controlling Signup & Login Screens
+
+Для того, что перейти с одного экрана на другой в Stack навигаторе, но при этом убрать кнопку "Назад" и полностью заменить один экран другим, можно использовать метод replace: `navigation.replace("OtherScreen");`
