@@ -13,13 +13,15 @@ export async function authenticate(mode, email, password) {
     returnSecureToken: true,
   });
 
-  console.log(response.data);
+  const token = response.data.idToken;
+
+  return token;
 }
 
-export async function createUser(email, password) {
-  const response = await authenticate(SIGNUP_MODE, email, password);
+export function createUser(email, password) {
+  return authenticate(SIGNUP_MODE, email, password);
 }
 
-export async function login(email, password) {
-  const response = await authenticate(LOGIN_MODE, email, password);
+export function login(email, password) {
+  return authenticate(LOGIN_MODE, email, password);
 }

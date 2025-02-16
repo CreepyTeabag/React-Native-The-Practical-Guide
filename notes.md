@@ -645,3 +645,45 @@ Authentications works quite simple. We've got our app and a backend API. User's 
 ### 005 Controlling Signup & Login Screens
 
 Для того, что перейти с одного экрана на другой в Stack навигаторе, но при этом убрать кнопку "Назад" и полностью заменить один экран другим, можно использовать метод replace: `navigation.replace("OtherScreen");`
+
+### 014 Accessing Protected Resources
+
+В Firebase можно включить защиту для данных. Например, можно запретить доступ к БД для неавторизованных пользователей. Для этого нужно просто в правилах прописать следующее:
+
+```
+{
+  "rules": {
+    ".read": "auth.uid != null",
+    ".write": "auth.uid != null",
+  }
+}
+```
+
+В таком случае ко всем нашим запросам как на чтение, так и на запись БД нужно будет прилагать токен авторизации. Иначе запросы не будут проходить.
+
+### 015 Storing Auth Tokens on the Device & Logging Users In Automatically
+
+Для хранения токена на устройстве можно использовать библиотеку AsyncStorage. Её нужно установить `npm install @react-native-async-storage/async-storage` и использовать вот так:
+
+```
+  // сохранить токен
+  AsyncStorage.setItem("token", "any string here");
+
+
+  // получить токен
+  useEffect(() => {
+    async function fetchToken() {
+      const storedToken = await AsyncStorage.getItem("token");
+
+      if (storedToken) {
+        setAuthToken(storedToken);
+      }
+    }
+
+    fetchToken();
+  }, []);
+
+
+  // удалить токен
+  AsyncStorage.removeItem("token");
+```
