@@ -687,3 +687,7 @@ Authentications works quite simple. We've got our app and a backend API. User's 
   // удалить токен
   AsyncStorage.removeItem("token");
 ```
+
+### 008 Adding & Configuring the Camera Package (for Native Camera Access)
+
+В expo есть пакет, который позволяет использовать всю функциональность каемры на полную: expo-camera. В нём можно настраивать очень много всего. Но для более простого взаимодействия с камерой достаточно использовать пакет попроще: expo-image-picker, который позволяет использовать камеру + просматривать фото на телефоне
