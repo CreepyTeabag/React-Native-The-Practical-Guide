@@ -18,8 +18,6 @@ export default function Map({ navigation }) {
       const lat = event.nativeEvent.coordinate.latitude;
       const lng = event.nativeEvent.coordinate.longitude;
 
-      console.log(lat, lng);
-
       setSelectedLocation({ lat, lng });
     },
     [navigation, selectedLocation]

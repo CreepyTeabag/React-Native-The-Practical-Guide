@@ -4,6 +4,8 @@ import {
   getCurrentPositionAsync,
   useForegroundPermissions,
   PermissionStatus,
+  requestBackgroundPermissionsAsync,
+  requestForegroundPermissionsAsync,
 } from "expo-location";
 import {
   useNavigation,
@@ -13,9 +15,9 @@ import {
 
 import OutlinedButton from "../ui/OutlinedButton";
 import { Colors } from "../../constants/colors";
-import { getMapPreview } from "../../util/location";
+import { getAddress, getMapPreview } from "../../util/location";
 
-export default function LocationsPicker() {
+export default function LocationsPicker({ onPickLocation }) {
   const [pickedLocation, setPickedLocation] = useState();
   const isFocused = useIsFocused();
 
@@ -35,6 +37,21 @@ export default function LocationsPicker() {
       setPickedLocation(mapPickedLocation);
     }
   }, [route, isFocused]);
+
+  useEffect(() => {
+    async function handleLocation() {
+      if (pickedLocation) {
+        const address = await getAddress(
+          pickedLocation.lat,
+          pickedLocation.lng
+        );
+
+        onPickLocation({ ...pickedLocation, address });
+      }
+    }
+
+    handleLocation();
+  }, [pickedLocation, onPickLocation]);
 
   async function verifyPermissions() {
     if (
@@ -61,6 +78,28 @@ export default function LocationsPicker() {
   }
 
   async function getLocationHandler() {
+    const { status: statusBackground } =
+      await requestBackgroundPermissionsAsync();
+    if (statusBackground !== "granted") {
+      Alert.alert(
+        "Permission Required",
+        "Please grant location permissions to use this feature.",
+        [{ text: "OK" }]
+      );
+      return;
+    }
+
+    const { status: statusForeground } =
+      await requestForegroundPermissionsAsync();
+    if (statusForeground !== "granted") {
+      Alert.alert(
+        "Permission Required",
+        "Please grant location permissions to use this feature.",
+        [{ text: "OK" }]
+      );
+      return;
+    }
+
     try {
       const hasPermission = await verifyPermissions();
       if (!hasPermission) return;
@@ -73,10 +112,6 @@ export default function LocationsPicker() {
       lat: location.coords.latitude,
       lng: location.coords.longitude,
     });
-    console.log(location);
-    console.log(
-      getMapPreview(location.coords.latitude, location.coords.longitude)
-    );
   }
 
   function pickOnMapHandler() {
