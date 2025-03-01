@@ -691,3 +691,51 @@ Authentications works quite simple. We've got our app and a backend API. User's 
 ### 008 Adding & Configuring the Camera Package (for Native Camera Access)
 
 В expo есть пакет, который позволяет использовать всю функциональность каемры на полную: expo-camera. В нём можно настраивать очень много всего. Но для более простого взаимодействия с камерой достаточно использовать пакет попроще: expo-image-picker, который позволяет использовать камеру + просматривать фото на телефоне
+
+## 12 - Using Native Device Features (Camera, Location & More)
+
+### 026 SQLite Getting Started & Initialization
+
+Для хранения данных на устройстве можно использовать expo SQLite:
+
+```
+npx expo install expo-sqlite
+...
+
+import * as SQLite from "expo-sqlite";
+const database = SQLite.openDatabase("places.db");
+```
+
+SQLite.openDatabase автоматически определит, существует ли такая БД. Если есть - откроет её. Если нет - создаст.
+
+Ещё нужно создать само наполнение БД. Например, так:
+
+```
+export function init() {
+  const promise = new Promise((resolve, reject) => {
+    database.transaction((tx) => {
+      tx.executeSql(
+        `CREATE TABLE IF NOT EXISTS places (
+          id INTEGER PRIMARY KEY NOT NULL,
+          title TEXT NOT NULL,
+          imageUri TEXT NOT NULL,
+          address TEXT NOT NULL,
+          lat REAL NOT NULL,
+          lng REAL NOT NULL
+         )`,
+        [],
+        () => {
+          resolve();
+        },
+        (_, error) => {
+          reject(error);
+        }
+      );
+    });
+  });
+
+  return promise;
+}
+```
+
+Эта функция попытается создать таблицу places. Если получится - разрешит promise. Если нет - вернёт ошибку.
