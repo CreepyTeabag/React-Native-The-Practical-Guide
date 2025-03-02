@@ -739,3 +739,78 @@ export function init() {
 ```
 
 Эта функция попытается создать таблицу places. Если получится - разрешит promise. Если нет - вернёт ошибку.
+
+## 13 - Building React Native Apps Without Expo
+
+### 002 How Exactly Does Expo Work
+
+Особенности Expo:
+
+- Можно использовать Expo Go, которое автоматически запускает наш код. Код не нужно собирать и публиковать.
+- Во время разработки реальное приложение не собирается. Вместо этого исходный код встраивается в клиент Expo Go и выполняется там. Тем не менее, можно собрать и опубликовать независимое приложение.
+- Для того, чтобы собрать приложение, можно использовать EAS Build Service. Получается, что у нас как бы 2 версии приложения:
+  - во время разработки: быстрая работа с Expo Go, моментальное отображение изменений
+  - для продакшена: независимое приложение, не требующее Expo Go, которое может быть собрано для любой платформы
+
+### 003 Expo Alternatives
+
+При разработке при помощи expo мы инициализируем проект так:
+
+```
+expo init RNCourse
+```
+
+При этом есть три разных варианта создания проекта на React native:
+
+- Expo "Managed Workflow"
+  - Easy to set up & work with
+  - Quick & frictionless development
+  - No or very little configuration required
+  - You can build (cross-platform) standalone apps
+- Expo "Bare Workflow"
+  - Is used when we need more control. For example, when we need to write our own native code in Swift, Objective-C, Android or Kotlin, and mix that with our React Native code.
+  - Relatively easy to set up & work with
+  - Convenient development
+  - Can't use Expo Go because native code won't work
+  - Some configuration required
+  - You can build cross-platform standalone apps
+  - Basically you control more, but there are also more things that you have to do.
+- React Native CLI
+  - More complex setup
+  - Convenient development
+  - Can require more configuration effort, especially with native device features
+  - Standalone apps are built locally (so, for example, you can't build for iOS on Windows)
+
+### 004 Setting Up Our System
+
+Для того, чтобы просмотреть приложение, сделанное на Expo Bare Workflow, придётся сначала собирать приложение, и только потом просматривать его на устройстве.
+
+### 005 Using Expo's Bare Workflow
+
+Чтобы использовать Bare Workflow, нужно следовать инструкции на сайте React Native. Нужно подготовить своё устройство: установить Node, JDK, Android Studio и т.д.
+
+```
+expo init
+> minimal
+```
+
+Такой проект будет иметь две папки - android и ios, в которых нужно будет вручную поправить конфигурацию, что сложнее, чем это делается в Managed Workflow (там эти настройки просто прописываются в app.json).
+Затем нужно будет собрать приложение:
+
+```
+npm run android
+```
+
+Первоначальная сборка может занимать довольно много времени. Последующие изменения в коде собираться будут быстрее.
+В целом запущенное таким образом приложение (в эмуляторе или на реальном подключённом устройстве) всё равно будет замечать изменения в коде и показывать их сразу.
+Можно также собрать приложение для iOS:
+
+```
+npm run ios
+```
+
+Каждый раз при установке новых пакетов нужно перезапускать этот процесс.
+
+### 007 Ejecting To The Bare Workflow
+
+Также можно изначально работать в Managed Workflow, а затем переключиться на Bare Workflow. Для этого достаточно выполнить команду `expo eject`.При выборе identifier-а нужно указать что-то вроде обратного url и в конце указать название проекта, например: "com.academind.rncourse"
