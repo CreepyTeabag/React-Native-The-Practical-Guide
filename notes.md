@@ -896,3 +896,59 @@ eas build -p android --profile preview
 4.2. Указать id приложения в формате com.<companyname>.<appname>
 4.3 Скачать .apk по предоставленной ссылке и радоваться🎉 5. Если нужно подготовить приложение для загрузки в магазин приложений - нужно настроить "production" в eas.apk. и собрать его при помощи `eas build --platform android`. Это создаст файл с расширением .aab, готовый к загрузке в магазин приложений.
 Также нужно будет создать аккаунт разработчика на каждой из платформ.
+
+## 15 - Push Notifications
+
+### 002 What are (Local) Notifications
+
+Локальные уведомления вызываются установленным приложением для локального устройства. Они не отправляются ни другим пользователям, ни на другие устройства. При этом уведомления планируются, доставляются и управляются на одном устройстве, без использования сервера.
+
+### 003 Adding the Expo Notification Package
+
+Для уведомлений используется пакет expo-notifications
+
+### 004 Scheduling Notifications - 006 Handling Incoming Notifications
+
+Для того, чтобы использовать локальные уведомления,
+нужно:
+
+1. импортировать пакет:
+   `import * as Notifications from "expo-notifications";`
+2. внутри <App /> или другого компонента запланировать уведомление:
+
+```
+  function scheduleNotificationHandler() {
+    requestPermissionsAsync();
+
+    Notifications.scheduleNotificationAsync({
+      content: {
+        title: "My first local notification",
+        body: "This is the body of the notification",
+        data: { userName: "Sophie" },
+      },
+      trigger: {
+        seconds: 2,
+      },
+    })
+      .then((response) => console.log(response))
+      .catch((error) => console.log("error", error));
+  }
+
+  async function requestPermissionsAsync() {
+    return await Notifications.requestPermissionsAsync();
+  }
+```
+
+3. Вне <App /> настроить управление уведомлениями, без которого уведомления не будут отображаться:
+
+```
+Notifications.setNotificationHandler({
+  handleNotification: async () => {
+    return {
+      shouldPlaySound: false,
+      shouldSetBadge: false,
+      shouldShowAlert: true,
+    };
+  },
+});
+```
