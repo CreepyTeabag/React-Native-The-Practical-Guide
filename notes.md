@@ -952,3 +952,70 @@ Notifications.setNotificationHandler({
   },
 });
 ```
+
+### 008 Reacting To Incoming Notifications
+
+Для того, чтобы отреагировать на полученное пользователем уведомление, нужно в useEffect-е выполнить следующее:
+
+```
+  useEffect(() => {
+  const receivedSubscription = Notifications.addNotificationReceivedListener(
+  (notification) => {
+      <сделать что-то здесь>
+    }
+  );
+
+    return () => {
+      receivedSubscription.remove();
+    };
+
+  }, []);
+```
+
+Данные, которые мы прикрепляли к уведомлению, находятся в `notification.request.content.data`.
+
+При этом желательно потом эту подписку на событие получения уведомления очистить, чтобы не случилось утечки памяти.
+
+### 009 Reacting To User Interaction With Incoming Notifications
+
+Также можно реагировать на тап по уведомлению:
+
+```
+  useEffect(() => {
+    const responseSubscription =
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        <какая-то реакция на тап по уведомление>
+      });
+
+    return () => {
+      responseSubscription.remove();
+    };
+  }, []);
+```
+
+Внутри response придёт объект, содержащий дополнительные данные + те же данные, что и от addNotificationReceivedListener.
+Например, переданные данные можно найти в `response.notification.request.content.data`
+
+### 010 Understanding Push Notifications
+
+Пуш уведомления существуют для того, чтобы отправлять уведомления, либо с бэкенда на устройства, либо с одного устройства на другое (но всё равно через бэкенд).
+Бэкенд в данном случае - это некий сервер, управляющий пуш-уведомлениями (например, такой предоставляет Expo). И тут есть два варианта отправки пуш уведомления:
+
+1. Код на бэке отправляет запрос на сервер пуш-уведомлений
+2. Приложение отправляет запрос на сервер пуш-уведомлений
+
+А далее уже сам сервер отправит пуш-уведомление на соответствующие устройства.
+
+### 011 Push Notifications Setup
+
+Для того, чтобы использовать пуш-уведомления, нужно создать уникальный токен при помощи
+
+```
+  useEffect(() => {
+    Notifications.getExpoPushTokenAsync({projectId}).then((pushTokenData) =>
+      console.log(pushTokenData)
+    );
+  }, []);
+```
+
+projectId можно получить на expo.dev на странице проекта.
